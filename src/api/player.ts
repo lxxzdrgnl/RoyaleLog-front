@@ -19,13 +19,36 @@ export interface PlayerProfile {
   threeCrownWins: number
   currentDeck: CardEntry[]
   cards: CardEntry[]
-  clan?: { name: string; tag: string; badgeId: number }
+  supportCards?: CardEntry[]
+  clan?: { name: string; tag: string; badgeId: number; role?: string }
   arena?: { id: number; name: string }
   leagueStatistics?: {
     currentSeason?: { rank?: number; trophies: number; bestTrophies?: number }
     previousSeason?: { rank?: number; trophies: number; bestTrophies?: number }
     bestSeason?: { rank?: number; trophies: number }
   }
+  // challenge / tournament
+  challengeMaxWins?: number
+  challengeCardsWon?: number
+  tournamentCardsWon?: number
+  tournamentBattleCount?: number
+  // clan war
+  warDayWins?: number
+  clanCardsCollected?: number
+  // misc
+  totalDonations?: number
+  starPoints?: number
+  legacyTrophyRoadHighScore?: number
+  badges?: Badge[]
+}
+
+export interface Badge {
+  name: string
+  level?: number
+  maxLevel?: number
+  progress?: number
+  target?: number
+  iconUrls?: { large: string }
 }
 
 export interface CardEntry {
@@ -35,8 +58,11 @@ export interface CardEntry {
   maxLevel: number
   count: number
   rarity: string
-  iconUrls?: { medium: string }
+  elixirCost?: number
+  starLevel?: number
   evolutionLevel?: number
+  maxEvolutionLevel?: number
+  iconUrls?: { medium: string }
 }
 
 export interface BattleLog {
@@ -66,6 +92,7 @@ export interface BattleCard {
   name: string
   level: number
   evolutionLevel?: number
+  starLevel?: number
   elixirCost?: number
   iconUrls?: { medium: string }
 }
@@ -73,5 +100,11 @@ export interface BattleCard {
 export const fetchProfile = (tag: string) =>
   get<PlayerProfile>(`/players/${encodeURIComponent(tag)}`)
 
-export const fetchBattles = (tag: string) =>
-  get<BattleLog[]>(`/players/${encodeURIComponent(tag)}/battles`)
+export const fetchBattles = (tag: string, offset = 0, limit = 25) =>
+  get<BattleLog[]>(`/players/${encodeURIComponent(tag)}/battles?offset=${offset}&limit=${limit}`)
+
+export const fetchMatches = (tag: string, offset = 0, limit = 25) =>
+  get<any[]>(`/matches/${encodeURIComponent(tag)}?offset=${offset}&limit=${limit}`)
+
+export const fetchMasteries = (tag: string) =>
+  get<any[]>(`/players/${encodeURIComponent(tag)}/masteries`)

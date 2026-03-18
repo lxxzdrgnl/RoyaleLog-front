@@ -17,13 +17,13 @@
           <CardChip
             v-for="card in me.cards"
             :key="card.id"
-            :card="{ id: card.id, name: card.name, level: card.level, evolutionLevel: card.evolutionLevel ?? 0, elixirCost: card.elixirCost ?? 0, iconUrl: card.iconUrls?.medium ?? '' }"
-            size="sm"
+            :card="{ id: card.id, name: card.name, level: card.level, evolutionLevel: card.evolutionLevel ?? 0, elixirCost: card.elixirCost ?? 0, starLevel: card.starLevel ?? 0, rarity: cardRarity(card.id), iconUrl: card.iconUrls?.medium ?? '' }"
+            size="md"
           />
         </div>
         <div v-if="me.supportCards?.[0]" class="tower-row">
           <CardChip
-            :card="{ id: me.supportCards[0].id, name: me.supportCards[0].name, level: me.supportCards[0].level, evolutionLevel: 0, elixirCost: 0, iconUrl: me.supportCards[0].iconUrls?.medium ?? '' }"
+            :card="{ id: me.supportCards[0].id, name: me.supportCards[0].name, level: me.supportCards[0].level, evolutionLevel: 0, elixirCost: 0, starLevel: 0, rarity: 'common', iconUrl: me.supportCards[0].iconUrls?.medium ?? '' }"
             size="sm"
           />
           <span class="tower-name">{{ me.supportCards[0].name }}</span>
@@ -52,13 +52,13 @@
           <CardChip
             v-for="card in opp.cards"
             :key="card.id"
-            :card="{ id: card.id, name: card.name, level: card.level, evolutionLevel: card.evolutionLevel ?? 0, elixirCost: card.elixirCost ?? 0, iconUrl: card.iconUrls?.medium ?? '' }"
-            size="sm"
+            :card="{ id: card.id, name: card.name, level: card.level, evolutionLevel: card.evolutionLevel ?? 0, elixirCost: card.elixirCost ?? 0, starLevel: card.starLevel ?? 0, rarity: cardRarity(card.id), iconUrl: card.iconUrls?.medium ?? '' }"
+            size="md"
           />
         </div>
         <div v-if="opp.supportCards?.[0]" class="tower-row opp">
           <CardChip
-            :card="{ id: opp.supportCards[0].id, name: opp.supportCards[0].name, level: opp.supportCards[0].level, evolutionLevel: 0, elixirCost: 0, iconUrl: opp.supportCards[0].iconUrls?.medium ?? '' }"
+            :card="{ id: opp.supportCards[0].id, name: opp.supportCards[0].name, level: opp.supportCards[0].level, evolutionLevel: 0, elixirCost: 0, starLevel: 0, rarity: 'common', iconUrl: opp.supportCards[0].iconUrls?.medium ?? '' }"
             size="sm"
           />
           <span class="tower-name">{{ opp.supportCards[0].name }}</span>
@@ -78,7 +78,11 @@ import { timeAgo } from '@/utils/cardAsset'
 import CardChip from './CardChip.vue'
 import ElixirStat from './ElixirStat.vue'
 
-const props = defineProps<{ battle: BattleLog; myTag: string }>()
+const props = defineProps<{ battle: BattleLog; myTag: string; rarityMap?: Map<number, string> }>()
+
+function cardRarity(id: number): string {
+  return props.rarityMap?.get(id) ?? 'common'
+}
 
 const me = computed(() => props.battle.team?.[0])
 const opp = computed(() => props.battle.opponent?.[0])
@@ -114,9 +118,15 @@ const isWin = computed(() => (me.value?.crowns ?? 0) > (opp.value?.crowns ?? 0))
 .game-mode { font-family: 'Rajdhani', sans-serif; font-size: 0.85rem; font-weight: 600; color: var(--text-dim); }
 .battle-time { font-family: 'Rajdhani', sans-serif; font-size: 0.8rem; color: var(--text-dim); margin-left: auto; }
 
-.battle-body { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; padding: 12px 14px; align-items: start; }
+.battle-body {
+  display: grid;
+  grid-template-columns: 1fr 60px 1fr;
+  gap: 8px;
+  padding: 12px 14px;
+  align-items: center;
+}
 
-.side { display: flex; flex-direction: column; gap: 6px; }
+.side { display: flex; flex-direction: column; gap: 5px; }
 .opp-side { align-items: flex-end; }
 
 .side-header { display: flex; gap: 6px; align-items: baseline; flex-wrap: wrap; }
@@ -124,8 +134,9 @@ const isWin = computed(() => (me.value?.crowns ?? 0) > (opp.value?.crowns ?? 0))
 .player-name { font-family: 'Rajdhani', sans-serif; font-size: 0.9rem; font-weight: 700; }
 .clan { font-family: 'Rajdhani', sans-serif; font-size: 0.75rem; color: var(--text-dim); }
 
-.deck-row { display: flex; gap: 3px; flex-wrap: wrap; }
-.deck-row.opp { justify-content: flex-end; }
+.deck-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 3px; width: 100%; }
+.deck-row.opp { direction: rtl; }
+.deck-row.opp :deep(.chip) { direction: ltr; }
 
 .tower-row { display: flex; align-items: center; gap: 6px; }
 .tower-row.opp { flex-direction: row-reverse; }
@@ -133,7 +144,7 @@ const isWin = computed(() => (me.value?.crowns ?? 0) > (opp.value?.crowns ?? 0))
 
 .elixir-row.opp { justify-content: flex-end; }
 
-.center-col { display: flex; align-items: center; justify-content: center; padding-top: 24px; }
+.center-col { display: flex; align-items: center; justify-content: center; }
 .crown-row { display: flex; align-items: center; gap: 6px; }
 .crown {
   font-family: 'Rajdhani', sans-serif; font-size: 1.6rem; font-weight: 700;

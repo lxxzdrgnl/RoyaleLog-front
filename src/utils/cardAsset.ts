@@ -1,4 +1,4 @@
-export function cardImage(name: string, evolutionLevel = 0): string {
+export function cardImage(name: string, evolutionLevel = 0, starLevel = 0): string {
   const base = name
     .toLowerCase()
     .replace(/['.]/g, '')
@@ -6,11 +6,32 @@ export function cardImage(name: string, evolutionLevel = 0): string {
     .replace(/-+/g, '-')
     .replace(/^-|-$/g, '')
   const filename = evolutionLevel > 0 ? `${base}-ev1` : base
-  return `/cards/${filename}.png`
+  const folder = starLevel >= 1 ? 'cards-gold' : 'cards'
+  return `/${folder}/${filename}.png`
+}
+
+// CR API returns relative levels per rarity (Common starts at 1, Rare at 1=actual 3, etc.)
+// API returns rarity in lowercase ("common", "rare", "epic", "legendary", "champion")
+const RARITY_OFFSET: Record<string, number> = {
+  common: 0,
+  rare: 2,
+  epic: 5,
+  legendary: 8,
+  champion: 10,
+}
+
+export function rarityOffset(rarity: string): number {
+  return RARITY_OFFSET[rarity?.toLowerCase()] ?? 0
+}
+
+export function displayLevel(level: number, rarity: string): number {
+  return level + rarityOffset(rarity)
 }
 
 export function arenaImage(arenaId: number): string {
-  return `/arenas/arena${arenaId}.png`
+  // CR API returns large IDs like 54000047 → extract offset
+  const n = arenaId >= 54000000 ? arenaId - 54000000 : arenaId
+  return `/arenas/arena${Math.min(Math.max(0, n), 24)}.png`
 }
 
 export function rarityColor(rarity: string): string {
