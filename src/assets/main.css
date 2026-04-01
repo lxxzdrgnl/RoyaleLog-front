@@ -1,25 +1,58 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
+  /* ── 배경/서피스 ── */
   --bg: #07090f;
   --surface: #0f1623;
   --card-bg: #1a2235;
   --border: #2a3a55;
+
+  /* ── 브랜드 색상 ── */
   --gold: #f5c418;
   --gold-dim: #c49a10;
   --blue: #2d6be4;
+  --blue-dim: #1e4fa3;
+  --purple: #6a1de8;
+
+  /* ── 상태 색상 ── */
   --win: #2ecc71;
   --loss: #e74c3c;
+  --warn: #f39c12;
+
+  /* ── 텍스트 ── */
   --text: #e8eef7;
+  --text-sub: #b0bfd4;
   --text-dim: #7a90b0;
+  --text-muted: #4a5f7a;
+
+  /* ── 희귀도 ── */
   --rarity-common: #9e9e9e;
   --rarity-rare: #f47d30;
   --rarity-epic: #9b59b6;
   --rarity-legendary: #f1c40f;
   --rarity-champion: #e74c3c;
+
+  /* ── 폰트 크기 ── */
+  --fs-xs: 0.7rem;
+  --fs-sm: 0.8rem;
+  --fs-base: 0.9rem;
+  --fs-md: 1rem;
+  --fs-lg: 1.1rem;
+  --fs-xl: 1.25rem;
+  --fs-2xl: 1.5rem;
+  --fs-3xl: 2rem;
+
+  /* ── 폰트 패밀리 ── */
+  --font-body: 'Nunito', sans-serif;
+  --font-display: 'Rajdhani', sans-serif;
+
+  /* ── 간격 ── */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
 }
 
-html, body { background: var(--bg); color: var(--text); font-family: 'Nunito', sans-serif; }
+html, body { background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: var(--fs-base); }
 
 a { color: inherit; text-decoration: none; }
 

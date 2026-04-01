@@ -10,7 +10,10 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      '/api': { target: 'http://localhost:8080', changeOrigin: true }
+      '/api-health': { target: 'http://localhost:8080', changeOrigin: true, rewrite: () => '/actuator/health' },
+      '/batch-health': { target: 'http://localhost:8081', changeOrigin: true, rewrite: () => '/actuator/health' },
+      '/api': { target: 'http://localhost:8080', changeOrigin: true },
+      '/batch': { target: 'http://localhost:8081', changeOrigin: true, rewrite: p => '/api/v1/batch' + p.replace('/batch', '') }
     }
   }
 })

@@ -6,6 +6,9 @@ export default createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     { path: '/', component: HomeView },
-    { path: '/player/:tag', component: PlayerView }
+    { path: '/player/:tag', component: PlayerView },
+    { path: '/tier', component: () => import('@/views/TierView.vue') },
+    { path: '/king', component: () => import('@/views/KingView.vue') },
+    { path: '/king/batch', component: () => import('@/views/BatchMonitorView.vue') }
   ]
 })
