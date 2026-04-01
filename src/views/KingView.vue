@@ -41,6 +41,13 @@ onMounted(checkHealth)
         </div>
         <span class="menu-arrow">→</span>
       </router-link>
+      <router-link to="/king/data" class="menu-item">
+        <div>
+          <div class="menu-title">DB Stats</div>
+          <div class="menu-desc">유저 · 배틀 · 테이블 용량 · 브라켓별 현황</div>
+        </div>
+        <span class="menu-arrow">→</span>
+      </router-link>
     </nav>
   </div>
 </template>

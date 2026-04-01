@@ -9,6 +9,7 @@ export default createRouter({
     { path: '/player/:tag', component: PlayerView },
     { path: '/tier', component: () => import('@/views/TierView.vue') },
     { path: '/king', component: () => import('@/views/KingView.vue') },
-    { path: '/king/batch', component: () => import('@/views/BatchMonitorView.vue') }
+    { path: '/king/batch', component: () => import('@/views/BatchMonitorView.vue') },
+    { path: '/king/data', component: () => import('@/views/DbStatsView.vue') }
   ]
 })

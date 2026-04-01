@@ -68,3 +68,14 @@ export interface StepDetail {
 
 export const fetchExecution = (id: number) =>
   get<ExecutionDetail>(`/execution/${id}`)
+
+export interface DbStats {
+  totalPlayers: number
+  totalBattles: number
+  dbSizeBytes: number
+  tables: { name: string; bytes: number }[]
+  brackets: { bracket: string; count: number }[]
+  battleTypes: { type: string; count: number }[]
+}
+
+export const fetchDbStats = () => get<DbStats>('/db-stats')
